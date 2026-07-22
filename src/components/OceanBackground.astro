@@ -1,0 +1,13 @@
+---
+// Full-viewport WebGL "ocean" background.
+//
+// The renderer lives in /public/ocean.js (adapted from Earendil's Apache-2.0
+// site — see README). It is loaded with is:inline so Astro serves it verbatim
+// instead of bundling it. It looks for #canvas and, optionally, #theme-toggle
+// and #logo.
+const base = import.meta.env.BASE_URL;
+---
+<canvas id="canvas" aria-hidden="true"></canvas>
+<!-- defer: this component renders at the top of <body>, so the script must wait
+     for the full page (e.g. the header theme toggle) to be parsed before it runs. -->
+<script src={`${base}ocean.js`} is:inline defer></script>

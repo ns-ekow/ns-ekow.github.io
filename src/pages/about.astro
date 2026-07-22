@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+const base = import.meta.env.BASE_URL;
+---
+<Base title="About — Your Name" description="A little about me.">
+  <article class="prose">
+    <h1>About</h1>
+    <p>
+      Write your bio here. This page is plain Astro markup — for longer,
+      Markdown-driven pages, add them under <code>src/content/</code> and render
+      them the same way the project pages do.
+    </p>
+    <a class="back" href={base}>&larr; Back home</a>
+  </article>
+</Base>

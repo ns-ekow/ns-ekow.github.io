@@ -1,0 +1,48 @@
+---
+import '../styles/global.css';
+import OceanBackground from '../components/OceanBackground.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = 'Folio', description = 'Portfolio' } = Astro.props;
+const base = import.meta.env.BASE_URL; // includes trailing slash, respects `base`
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+  </head>
+  <body>
+    <OceanBackground />
+
+    <header class="site-header">
+      <a class="brand" href={base}>e k x.</a>
+      <nav>
+        <a href={base}>Home</a>
+        <a href={`${base}blog/`}>Blog</a>
+        <a href={`${base}about/`}>About</a>
+        <!-- ocean.js flips light/dark on click; CSS shows the matching icon. -->
+        <button id="theme-toggle" type="button" aria-label="Toggle appearance">
+          <svg class="icon icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+          </svg>
+          <svg class="icon icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </nav>
+    </header>
+
+    <main class="site">
+      <slot />
+    </main>
+  </body>
+</html>

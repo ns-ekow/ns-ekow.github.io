@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const base = import.meta.env.BASE_URL;
+const projects = (await getCollection('projects')).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+---
+<Base title="Saki — Portfolio" description="Software engineering for the sake of making beautiful things.">
+  <section class="hero">
+    <h1>Hi, my name is <span class="site-header"><a ref={base} class="brand">Saki.</a></span></h1>
+    
+    <p class="muted">
+      A generalist software engineer with a passion for making software that improves human capabilities.
+    </p>
+  </section>
+
+  <section>
+    <h2>Projects</h2>
+    <ul class="project-list">
+      {projects.map((p) => (
+        <li>
+          <a href={`${base}projects/${p.id}/`}>
+            <span class="p-title">{p.data.title}</span>
+            <span class="p-desc">{p.data.description}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>

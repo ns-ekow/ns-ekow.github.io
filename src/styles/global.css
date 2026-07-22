@@ -1,0 +1,141 @@
+:root {
+  --bg-day: #b4af99;
+  --text-day: #353431;
+  --muted-day: #6d6b64;
+  --bg-night: #412df7;
+  --text-night: #e9e7e1;
+  --muted-night: #9a988f;
+  --maxw: 46rem;
+  --fade: 0.9s cubic-bezier(0.33, 0, 0.67, 1);
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: ui-serif, Georgia, "Times New Roman", serif;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--text-day);
+  background: var(--bg-day);
+  transition: color var(--fade), background var(--fade);
+}
+body.theme-night { color: var(--text-night); background: var(--bg-night); }
+
+.muted { color: var(--muted-day); }
+body.theme-night .muted { color: var(--muted-night); }
+
+/* ---- Ocean background canvas -------------------------------------------- */
+/* Fixed, full-viewport, behind everything. Fades in once the shader is live. */
+#canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  display: block;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 1s ease-in;
+}
+#canvas.shader-ready { opacity: 1; }
+
+/* ---- Chrome ------------------------------------------------------------- */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem;
+}
+.site-header .brand {
+  font-family: monospace, "SF Mono", Menlo, monospace;
+  letter-spacing: 0.12em;
+  font-size: 1 rem;
+  font-weight: 700;
+  text-decoration: underline yellow wavy;
+  color: inherit;
+}
+.site-header nav {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 1 rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.site-header nav a { color: inherit; text-decoration: none; opacity: 0.8; }
+.site-header nav a:hover { opacity: 1; text-decoration: underline yellow wavy; }
+
+#theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+#theme-toggle:hover { opacity: 1; }
+#theme-toggle .icon { width: 1.2rem; height: 1.2rem; display: none; }
+/* Show the icon for the current state: sun in light, moon in dark. */
+body:not(.theme-night) #theme-toggle .icon--sun { display: block; }
+body.theme-night #theme-toggle .icon--moon { display: block; }
+
+/* ---- Content ------------------------------------------------------------ */
+main.site {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 2rem 1.25rem 6rem;
+}
+
+.hero { padding: 4rem 0 3rem; }
+.hero h1 { font-size: clamp(2rem, 6vw, 3.2rem); line-height: 1.1; margin: 0 0 0.75rem; }
+.hero p { font-size: 1.15rem; margin: 0; max-width: 34rem; }
+
+section h2 {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.65;
+  margin: 2.5rem 0 1rem;
+}
+
+.project-list { list-style: none; margin: 0; padding: 0; }
+.project-list li { border-top: 1px solid color-mix(in srgb, currentColor 18%, transparent); }
+.project-list li:last-child { border-bottom: 1px solid color-mix(in srgb, currentColor 18%, transparent); }
+.project-list a {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 1rem 0;
+  color: inherit;
+  text-decoration: none;
+}
+.project-list a:hover .p-title { text-decoration: underline; }
+.p-title { font-size: 1.2rem; }
+.p-desc { color: var(--muted-day); font-size: 0.98rem; }
+body.theme-night .p-desc { color: var(--muted-night); }
+
+.prose h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); line-height: 1.15; margin: 0 0 0.5rem; }
+.prose .meta {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  opacity: 0.6;
+  margin: 0 0 2rem;
+}
+.prose a { color: inherit; }
+.back { display: inline-block; margin-top: 3rem; font-size: 0.9rem; }
