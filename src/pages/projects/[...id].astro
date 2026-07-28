@@ -21,7 +21,6 @@ const base = import.meta.env.BASE_URL;
       <h1>{project.data.title}</h1>
       <p class="meta">
         {project.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-        {project.data.url && (<> · <a href={project.data.url}>visit ↗</a></>)}
       </p>
       {project.data.tags.length > 0 && (
         <div class="p-tags">
@@ -32,6 +31,20 @@ const base = import.meta.env.BASE_URL;
       )}
     </header>
     <Content />
+    {(project.data.demo || project.data.repo) && (
+      <div class="post-links post-links--footer">
+        {project.data.demo && (
+          <a class="post-link" href={project.data.demo} target="_blank" rel="noopener noreferrer">
+            View demo ↗
+          </a>
+        )}
+        {project.data.repo && (
+          <a class="post-link" href={project.data.repo} target="_blank" rel="noopener noreferrer">
+            GitHub ↗
+          </a>
+        )}
+      </div>
+    )}
     <a class="back" href={base}>&larr; Back home</a>
   </article>
 </Base>

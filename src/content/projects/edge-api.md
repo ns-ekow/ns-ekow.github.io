@@ -3,6 +3,7 @@ title: "Edge API"
 description: "A tiny Go service running at the edge."
 date: 2026-06-10
 tags: ["Go", "Backend", "AI"]
+repo: "https://github.com/ns-ekow"
 featured: false
 ---
 

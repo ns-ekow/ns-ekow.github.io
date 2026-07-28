@@ -5,7 +5,7 @@
   --bg-night: #412df7;
   --text-night: #e9e7e1;
   --muted-night: #9a988f;
-  --maxw: 46rem;
+  --maxw: 54rem;
   --fade: 0.9s cubic-bezier(0.33, 0, 0.67, 1);
 }
 
@@ -198,6 +198,26 @@ body.theme-night .p-desc { color: var(--muted-night); }
 .post-head .meta { margin: 0; }
 .post-head .p-tags { margin-top: 0.6rem; }
 
+/* Action links (View demo / GitHub) — each rendered only when its URL is set. */
+.post-links { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.1rem; }
+.post-links--footer { margin-top: 2.5rem; }
+.post-link {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  padding: 0.4rem 0.9rem;
+  color: inherit;
+  border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.post-link:hover {
+  border-color: currentColor;
+  background: color-mix(in srgb, currentColor 12%, transparent);
+}
+.paper .post-links a { text-decoration: none; }
+
 .filter-empty { color: var(--muted-day); font-size: 0.95rem; }
 body.theme-night .filter-empty { color: var(--muted-night); }
 
@@ -209,7 +229,95 @@ body.theme-night .filter-empty { color: var(--muted-night); }
   opacity: 0.6;
   margin: 0 0 2rem;
 }
-.prose a { color: inherit; }
+.prose a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+
+/* ---- Long-form content typography (blog + project bodies) --------------- */
+.prose p,
+.prose ul,
+.prose ol { margin: 1.1rem 0; }
+.prose ul,
+.prose ol { padding-left: 1.4rem; }
+.prose li + li { margin-top: 0.35rem; }
+
+.prose h2 { font-size: 1.55rem; line-height: 1.2; margin: 2.4rem 0 0; }
+.prose h3 { font-size: 1.2rem; line-height: 1.25; margin: 2rem 0 0; }
+.prose h4 { font-size: 1.02rem; margin: 1.6rem 0 0; }
+
+/* Images never exceed the sheet; block-level with breathing room. */
+.prose img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin: 1.75rem 0;
+}
+
+/* Media never overflows the sheet. Self-hosted <video> keeps its own ratio;
+   pasted embed <iframe>s (YouTube/Vimeo) carry fixed width/height attrs, so we
+   force them to fill the column at 16:9. */
+.prose video,
+.prose iframe {
+  display: block;
+  max-width: 100%;
+  margin: 1.75rem 0;
+  border-radius: 4px;
+}
+.prose video { height: auto; }
+.prose iframe {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border: 0;
+}
+
+.prose blockquote {
+  margin: 1.75rem 0;
+  padding: 0.15rem 0 0.15rem 1.1rem;
+  border-left: 3px solid color-mix(in srgb, currentColor 45%, transparent);
+  /* inherit full text color — a muted mix compounds with the paper's own
+     alpha and becomes unreadable on the dark sheet. Border + italic distinguish it. */
+  color: inherit;
+  font-style: italic;
+}
+
+/* Code: block gets padding/rounding and scrolls horizontally; inline gets a chip.
+   Shiki sets the block's background via inline style — we only add layout. */
+.prose pre {
+  margin: 1.75rem 0;
+  padding: 1rem 1.15rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.prose :not(pre) > code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.88em;
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  background: color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.75rem 0;
+  font-size: 0.95rem;
+}
+.prose th,
+.prose td {
+  padding: 0.5rem 0.7rem;
+  text-align: left;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+}
+.prose th { font-weight: 700; }
+
+.prose hr {
+  border: 0;
+  border-top: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  margin: 2.25rem 0;
+}
+
 .back { display: inline-block; margin-top: 3rem; font-size: 0.9rem; }
 
 /* ---- Paper sheet (blog + project detail pages) -------------------------- */
