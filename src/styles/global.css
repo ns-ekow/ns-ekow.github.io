@@ -42,6 +42,27 @@ body.theme-night .muted { color: var(--muted-night); }
 }
 #canvas.shader-ready { opacity: 1; }
 
+/* ---- Skipping star sprite (decorative; above the water, behind text) ---- */
+.skip-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.skip-star {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 44px;
+  height: 44px;
+  will-change: transform, opacity;
+}
+.skip-star-img { position: absolute; inset: 0; width: 100%; height: 100%; display: none; }
+/* Light mode → dark star; dark mode → light star. */
+body:not(.theme-night) .skip-star-img--dark { display: block; }
+body.theme-night .skip-star-img--light { display: block; }
+
 /* ---- Chrome ------------------------------------------------------------- */
 .site-header {
   display: flex;
@@ -139,3 +160,33 @@ body.theme-night .p-desc { color: var(--muted-night); }
 }
 .prose a { color: inherit; }
 .back { display: inline-block; margin-top: 3rem; font-size: 0.9rem; }
+
+/* ---- Paper sheet (blog + project detail pages) -------------------------- */
+/* A textured "sheet" floating over the lake, à la Earendil's content pages.
+   Light paper by day, dark paper by night (paper*.png are 256px tiles). */
+.paper {
+  position: relative;
+  isolation: isolate;
+  padding: clamp(1.9rem, 4vw, 3.2rem) clamp(1.6rem, 4vw, 3rem);
+  color: #2b2a27;
+}
+/* The textured sheet lives on a layer behind the text and is run through the
+   #paper-deckle filter (defined in Base.astro) so its edges look torn rather
+   than laser-cut. The drop-shadow is applied after displacement, so it hugs
+   the irregular edge instead of a stiff rectangle. Text stays unfiltered/crisp. */
+.paper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05)),
+    url('/paper.png') center / 256px 256px;
+  filter: url(#paper-deckle) drop-shadow(0 14px 34px rgba(0, 0, 0, 0.26));
+}
+.paper a { text-decoration: underline; text-underline-offset: 2px; }
+
+body.theme-night .paper { color: rgba(240, 240, 240, 0.86); }
+body.theme-night .paper::before {
+  background: url('/paper-dark.png') center / 256px 256px;
+  filter: url(#paper-deckle) drop-shadow(0 14px 34px rgba(0, 0, 0, 0.5));
+}

@@ -1416,55 +1416,144 @@ canvas.addEventListener('click', (e) => {
   }
 });
 
-// Skipping rocks: every few seconds, launch a short sequence of ripples that
-// marches across the surface like a stone skimming the lake — each skip closer
-// together and smaller than the last. Reuses the existing ripple system.
-(function setupSkippingRocks() {
+// Skipping star: every few seconds a small star skims across the lake, dipping
+// to the surface a few times (each hop shorter/lower), spawning a ripple at each
+// touch, then sinking. A 2D sprite rides the same skip path that drives the
+// ripples, so the splash lines up with the star hitting the water.
+(function setupSkippingStars() {
   const reduceMotion = window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduceMotion) return; // keep the lake still for reduced-motion users
 
+  // ---- tunables: steer the feel here ----
+  const SPIN_DEG_PER_S = 65;    // star sparkle rotation
+  const LEAD_MS = 340;          // fly-in before the first touch
+  const TAIL_MS = 720;          // sink + fade after the last touch
+  const HOP_MS_MIN = 200, HOP_MS_JITTER = 90; // time between touches
+  const ARC_FRAC = 0.085;       // first hop height (fraction of viewport height)
+  const FALLOFF = 0.72;         // each hop's arc + spacing shrink by this
+  const AMP_MIN = 0.30, AMP_MAX = 0.40; // first ripple strength
+  const SCALE_FAR = 0.6;        // star size multiplier at the horizon end
+  const CADENCE_MS = 6000, CADENCE_JITTER = 5000; // 6..11s between throws
+  // ----------------------------------------
+
+  const STAR_HTML =
+    '<img class="skip-star-img skip-star-img--dark" src="/star-dark.svg" alt="" aria-hidden="true">' +
+    '<img class="skip-star-img skip-star-img--light" src="/star-light.svg" alt="" aria-hidden="true">';
+
+  const layer = document.createElement('div');
+  layer.className = 'skip-layer';
+  document.body.appendChild(layer);
+
+  const active = [];
+
   function frac(min, max) { return min + Math.random() * (max - min); }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function smoothstep(e0, e1, x) {
+    const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0)));
+    return t * t * (3 - 2 * t);
+  }
 
-  function launchSkip() {
+  function launchThrow() {
     const rect = canvas.getBoundingClientRect();
-    if (document.hidden || !rect.width || !rect.height) {
-      scheduleNext();
-      return;
-    }
+    if (document.hidden || !rect.width || !rect.height) { scheduleNext(); return; }
 
-    const bounces = 4 + Math.floor(Math.random() * 3); // 4..6 skips
+    const hops = 4 + Math.floor(Math.random() * 3); // 4..6 touches
     const fromLeft = Math.random() < 0.5;
     const dirX = fromLeft ? 1 : -1;
-    let x = fromLeft ? frac(0.12, 0.35) : frac(0.65, 0.88); // screen fractions
-    let y = frac(0.86, 0.96);        // near water (low on screen) = ripples show
-    const driftY = -frac(0.03, 0.06); // skip away, toward the horizon
-    let step = frac(0.10, 0.16);     // gap between skips (shrinks each bounce)
-    let amp = frac(0.30, 0.40);      // impact strength (shrinks each bounce)
-    let delay = 0;
+    let fx = fromLeft ? frac(0.12, 0.35) : frac(0.65, 0.88); // screen fractions
+    let fy = frac(0.86, 0.96);          // near water (low on screen) = ripples show
+    const driftY = -frac(0.03, 0.06);   // skip away, toward the horizon
+    let step = frac(0.10, 0.16);
+    let amp = frac(AMP_MIN, AMP_MAX);
+    let t = LEAD_MS;                    // first touch after the fly-in
 
-    for (let i = 0; i < bounces; i++) {
-      const px = x, py = y, pamp = amp, pdelay = delay;
-      setTimeout(function() {
-        const now = performance.now() * 0.001;
-        const hit = screenToWaterHit(rect.left + px * rect.width, rect.top + py * rect.height, now);
-        if (hit) addRipple(hit.x, hit.z, now, pamp);
-      }, pdelay);
-
-      x += dirX * step;
-      y += driftY;
-      step *= 0.72;
+    const pts = [];
+    for (let i = 0; i < hops; i++) {
+      pts.push({ fx, fy, t, amp, arc: ARC_FRAC * Math.pow(FALLOFF, i), fired: false });
+      fx += dirX * step;
+      fy += driftY;
+      step *= FALLOFF;
       amp *= 0.7;
-      delay += 90 + Math.random() * 50;
+      t += HOP_MS_MIN + Math.random() * HOP_MS_JITTER;
     }
+
+    const el = document.createElement('div');
+    el.className = 'skip-star';
+    el.innerHTML = STAR_HTML;
+    layer.appendChild(el);
+
+    active.push({ pts, el, dirX, start: performance.now(), phase: Math.random() * 360, last: pts[pts.length - 1] });
     scheduleNext();
   }
 
-  function scheduleNext() {
-    setTimeout(launchSkip, 6000 + Math.random() * 5000); // every 6..11s
+  // Screen-space position (viewport fractions) of a throw at a given elapsed time.
+  function positionAt(thr, elapsed) {
+    const pts = thr.pts, first = pts[0], last = thr.last;
+    if (elapsed < first.t) {
+      // fly-in: ease down from up-and-behind toward the first touch
+      const p = smoothstep(0, first.t, elapsed);
+      return {
+        fx: lerp(first.fx - thr.dirX * 0.05, first.fx, p),
+        fy: lerp(first.fy - 0.16, first.fy, p),
+        opacity: smoothstep(0, first.t * 0.5, elapsed),
+      };
+    }
+    if (elapsed <= last.t) {
+      let i = 0;
+      while (i < pts.length - 1 && elapsed > pts[i + 1].t) i++;
+      const a = pts[i], b = pts[i + 1] || pts[i];
+      const p = Math.min(1, (elapsed - a.t) / ((b.t - a.t) || 1));
+      return {
+        fx: lerp(a.fx, b.fx, p),
+        fy: lerp(a.fy, b.fy, p) - a.arc * 4 * p * (1 - p), // parabolic hop (up)
+        opacity: 1,
+      };
+    }
+    // sink + fade after the last touch
+    const p = smoothstep(last.t, last.t + TAIL_MS, elapsed);
+    return { fx: last.fx + thr.dirX * 0.02 * p, fy: last.fy + 0.05 * p, opacity: 1 - p };
   }
 
-  setTimeout(launchSkip, 2000); // first throw shortly after load
+  function frame(now) {
+    const rect = canvas.getBoundingClientRect();
+    for (let k = active.length - 1; k >= 0; k--) {
+      const thr = active[k];
+      const elapsed = now - thr.start;
+
+      // fire the ripple the first time we reach each touch
+      for (let i = 0; i < thr.pts.length; i++) {
+        const pt = thr.pts[i];
+        if (!pt.fired && elapsed >= pt.t) {
+          pt.fired = true;
+          const time = now * 0.001;
+          const hit = screenToWaterHit(rect.left + pt.fx * rect.width, rect.top + pt.fy * rect.height, time);
+          if (hit) addRipple(hit.x, hit.z, time, pt.amp);
+        }
+      }
+
+      const s = positionAt(thr, elapsed);
+      const scale = lerp(SCALE_FAR, 1, smoothstep(0.62, 0.96, s.fy));
+      const px = rect.left + s.fx * rect.width;
+      const py = rect.top + s.fy * rect.height;
+      const rot = (thr.phase + SPIN_DEG_PER_S * (elapsed / 1000)) % 360;
+      thr.el.style.opacity = s.opacity;
+      thr.el.style.transform =
+        'translate(' + px.toFixed(1) + 'px,' + py.toFixed(1) + 'px) translate(-50%,-50%) rotate(' + rot.toFixed(1) + 'deg) scale(' + scale.toFixed(3) + ')';
+
+      if (elapsed > thr.last.t + TAIL_MS) {
+        thr.el.remove();
+        active.splice(k, 1);
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  function scheduleNext() {
+    setTimeout(launchThrow, CADENCE_MS + Math.random() * CADENCE_JITTER);
+  }
+  setTimeout(launchThrow, 1800); // first throw shortly after load
 })();
 
 function updateLightTexture(time) {

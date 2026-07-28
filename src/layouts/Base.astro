@@ -22,6 +22,15 @@ const base = import.meta.env.BASE_URL; // includes trailing slash, respects `bas
   <body>
     <OceanBackground />
 
+    <!-- Deckle-edge filter for the paper sheets (used by .paper::before in CSS).
+         feTurbulence + feDisplacementMap wobble the sheet's edges organically. -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+      <filter id="paper-deckle" x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="2" seed="4" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="9" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </svg>
+
     <header class="site-header">
       <a class="brand" href={base}>e k x.</a>
       <nav>
