@@ -1,0 +1,17 @@
+---
+import Base from '../layouts/Base.astro';
+const base = import.meta.env.BASE_URL;
+---
+<Base title="Lost at sea — 404" description="That page drifted off the map.">
+  {/* data-page-type="404" wakes the dormant camera pan in ocean.js:
+      the view drifts up and back over ~3s, gazing off toward the horizon. */}
+  <div class="page" data-page-type="404">
+    <section class="hero">
+      <h1>404</h1>
+      <p class="muted">
+        This page drifted off the map. The camera's gone looking for it.
+      </p>
+      <p><a class="back" href={base}>&larr; Back to shore</a></p>
+    </section>
+  </div>
+</Base>

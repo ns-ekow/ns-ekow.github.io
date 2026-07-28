@@ -150,6 +150,57 @@ section h2 {
 .p-desc { color: var(--muted-day); font-size: 0.98rem; }
 body.theme-night .p-desc { color: var(--muted-night); }
 
+/* ---- Tags + filter ------------------------------------------------------ */
+.tag-filter { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1.25rem; }
+.tag-filter button {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.7rem;
+  color: inherit;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+  border-radius: 999px;
+  cursor: pointer;
+  opacity: 0.62;
+  transition: opacity 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+.tag-filter button:hover { opacity: 1; }
+.tag-filter button[aria-pressed="true"] {
+  opacity: 1;
+  border-color: currentColor;
+  background: color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.p-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+.tag {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.5rem;
+  color: inherit;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+  border-radius: 999px;
+  opacity: 0.72;
+  cursor: pointer;
+  text-decoration: none;
+}
+.tag:hover { opacity: 1; }
+/* keep chips clean on the paper sheet (which underlines links by default) */
+.paper .p-tags a.tag { text-decoration: none; }
+
+/* Detail-page header: title, date, then tags — a tight block above the body. */
+.post-head { margin-bottom: 2rem; }
+.post-head h1 { margin: 0 0 0.5rem; }
+.post-head .meta { margin: 0; }
+.post-head .p-tags { margin-top: 0.6rem; }
+
+.filter-empty { color: var(--muted-day); font-size: 0.95rem; }
+body.theme-night .filter-empty { color: var(--muted-night); }
+
 .prose h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); line-height: 1.15; margin: 0 0 0.5rem; }
 .prose .meta {
   font-family: ui-monospace, "SF Mono", Menlo, monospace;

@@ -1,16 +1,24 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import { tagSlug } from '../lib/tags';
 
 const base = import.meta.env.BASE_URL;
 const projects = (await getCollection('projects')).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime()
 );
+
+// Unique tags across all projects: slug -> display label, sorted by label.
+const tagMap = new Map<string, string>();
+for (const p of projects) {
+  for (const t of p.data.tags) if (!tagMap.has(tagSlug(t))) tagMap.set(tagSlug(t), t);
+}
+const tags = [...tagMap.entries()].sort((a, b) => a[1].localeCompare(b[1]));
 ---
 <Base title="Saki — Portfolio" description="Software engineering for the sake of making beautiful things.">
   <section class="hero">
     <h1>Hi, my name is <span class="site-header"><a ref={base} class="brand">Saki.</a></span></h1>
-    
+
     <p class="muted">
       A generalist software engineer with a passion for making software that improves human capabilities.
     </p>
@@ -18,15 +26,38 @@ const projects = (await getCollection('projects')).sort(
 
   <section>
     <h2>Projects</h2>
+
+    {tags.length > 0 && (
+      <div class="tag-filter" role="group" aria-label="Filter projects by tag">
+        <button type="button" data-tag="" aria-pressed="true">All</button>
+        {tags.map(([slug, label]) => (
+          <button type="button" data-tag={slug} aria-pressed="false">{label}</button>
+        ))}
+      </div>
+    )}
+
     <ul class="project-list">
       {projects.map((p) => (
-        <li>
+        <li data-tags={p.data.tags.map(tagSlug).join(' ')}>
           <a href={`${base}projects/${p.id}/`}>
             <span class="p-title">{p.data.title}</span>
             <span class="p-desc">{p.data.description}</span>
           </a>
+          {p.data.tags.length > 0 && (
+            <div class="p-tags">
+              {p.data.tags.map((t) => (
+                <button class="tag" type="button" data-tag={tagSlug(t)}>{t}</button>
+              ))}
+            </div>
+          )}
         </li>
       ))}
     </ul>
+    <p class="filter-empty" hidden>No projects with that tag yet.</p>
   </section>
 </Base>
+
+<script>
+  import { initTagFilter } from '../scripts/tag-filter';
+  initTagFilter();
+</script>

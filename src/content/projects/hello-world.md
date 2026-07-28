@@ -2,7 +2,7 @@
 title: "Hello, World"
 description: "The first project on my new portfolio."
 date: 2026-07-22
-tags: ["astro", "webgl"]
+tags: ["Full Stack", "Astro", "WebGL"]
 featured: true
 ---
 

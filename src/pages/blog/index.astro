@@ -1,11 +1,18 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import { tagSlug } from '../../lib/tags';
 
 const base = import.meta.env.BASE_URL;
 const posts = (await getCollection('blog')).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime()
 );
+
+const tagMap = new Map<string, string>();
+for (const p of posts) {
+  for (const t of p.data.tags) if (!tagMap.has(tagSlug(t))) tagMap.set(tagSlug(t), t);
+}
+const tags = [...tagMap.entries()].sort((a, b) => a[1].localeCompare(b[1]));
 
 function fmt(d) {
   return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
@@ -14,15 +21,38 @@ function fmt(d) {
 <Base title="Blog — Your Name" description="Writing and notes.">
   <section>
     <h2>Blog</h2>
+
+    {tags.length > 0 && (
+      <div class="tag-filter" role="group" aria-label="Filter posts by tag">
+        <button type="button" data-tag="" aria-pressed="true">All</button>
+        {tags.map(([slug, label]) => (
+          <button type="button" data-tag={slug} aria-pressed="false">{label}</button>
+        ))}
+      </div>
+    )}
+
     <ul class="project-list">
       {posts.map((p) => (
-        <li>
+        <li data-tags={p.data.tags.map(tagSlug).join(' ')}>
           <a href={`${base}blog/${p.id}/`}>
             <span class="p-title">{p.data.title}</span>
             <span class="p-desc">{fmt(p.data.date)} · {p.data.description}</span>
           </a>
+          {p.data.tags.length > 0 && (
+            <div class="p-tags">
+              {p.data.tags.map((t) => (
+                <button class="tag" type="button" data-tag={tagSlug(t)}>{t}</button>
+              ))}
+            </div>
+          )}
         </li>
       ))}
     </ul>
+    <p class="filter-empty" hidden>No posts with that tag yet.</p>
   </section>
 </Base>
+
+<script>
+  import { initTagFilter } from '../../scripts/tag-filter';
+  initTagFilter();
+</script>

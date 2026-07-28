@@ -2,7 +2,7 @@
 title: "First posts"
 description: "Kicking off the blog."
 date: 2026-07-22
-tags: ["meta"]
+tags: ["meta", "test"]
 ---
 
 This is the first blog post.
