@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="14" fill="#14181b"/>
+  <text x="32" y="37" text-anchor="middle" fill="#ece9e1"
+        font-family="ui-monospace, 'DejaVu Sans Mono', Menlo, monospace"
+        font-size="23" font-weight="700" letter-spacing="1.5">ekx</text>
+  <path d="M15 47 q4.5 -6 9 0 t9 0 t9 0" fill="none" stroke="#f4d03f"
+        stroke-width="3" stroke-linecap="round"/>
+</svg>
