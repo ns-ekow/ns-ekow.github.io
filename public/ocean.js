@@ -96,10 +96,11 @@ function applyThemePreference() {
 }
 
 function updateThemeToggle() {
-  // Which icon shows is CSS-driven off body.theme-night; here we only keep the
-  // accessible label describing what a click will do.
-  if (themeToggle) {
-    themeToggle.setAttribute(
+  // Query fresh each call: after a client-side navigation the toggle is a new
+  // element. Which icon shows is CSS-driven off body.theme-night.
+  const btn = document.getElementById('theme-toggle');
+  if (btn) {
+    btn.setAttribute(
       'aria-label',
       getNightPreference() ? 'Switch to light theme' : 'Switch to dark theme'
     );
@@ -115,14 +116,24 @@ function persistThemeMode() {
   }
 }
 
-if (themeToggle) {
-  themeToggle.addEventListener('click', () => {
-    // Flip the effective state and lock it in as an explicit choice.
-    themeMode = getNightPreference() ? 'day' : 'night';
-    persistThemeMode();
-    updateThemeToggle();
-  });
-}
+// Delegated on document (which survives client-side navigations) so the toggle
+// keeps working after the header button is replaced on each page swap.
+document.addEventListener('click', (e) => {
+  if (!(e.target instanceof Element) || !e.target.closest('#theme-toggle')) return;
+  // Flip the effective state and lock it in as an explicit choice.
+  themeMode = getNightPreference() ? 'day' : 'night';
+  persistThemeMode();
+  updateThemeToggle();
+});
+
+// Astro's ClientRouter resets <body> attributes to each page's static HTML, so
+// re-apply the theme on the incoming document before it paints (avoids a flash).
+document.addEventListener('astro:before-swap', (e) => {
+  const b = e.newDocument && e.newDocument.body;
+  if (!b) return;
+  if (getNightPreference()) b.classList.add('theme-night');
+  b.classList.add('theme-transition-ready');
+});
 
 // Initial application of the preference.
 updateThemeToggle();
@@ -1441,9 +1452,14 @@ canvas.addEventListener('click', (e) => {
     '<img class="skip-star-img skip-star-img--dark" src="/star-dark.svg" alt="" aria-hidden="true">' +
     '<img class="skip-star-img skip-star-img--light" src="/star-light.svg" alt="" aria-hidden="true">';
 
-  const layer = document.createElement('div');
-  layer.className = 'skip-layer';
-  document.body.appendChild(layer);
+  // Prefer the persisted element from OceanBackground.astro (survives client
+  // navigations); fall back to creating one if it isn't present.
+  let layer = document.querySelector('.skip-layer');
+  if (!layer) {
+    layer = document.createElement('div');
+    layer.className = 'skip-layer';
+    document.body.appendChild(layer);
+  }
 
   const active = [];
 

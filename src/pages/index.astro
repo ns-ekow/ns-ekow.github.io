@@ -59,5 +59,6 @@ const tags = [...tagMap.entries()].sort((a, b) => a[1].localeCompare(b[1]));
 
 <script>
   import { initTagFilter } from '../scripts/tag-filter';
-  initTagFilter();
+  // Fires on initial load and after every client-side navigation.
+  document.addEventListener('astro:page-load', initTagFilter);
 </script>
