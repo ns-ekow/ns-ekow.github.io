@@ -253,21 +253,26 @@ body.theme-night .filter-empty { color: var(--muted-night); }
 }
 
 /* Media never overflows the sheet. Self-hosted <video> keeps its own ratio;
-   pasted embed <iframe>s (YouTube/Vimeo) carry fixed width/height attrs, so we
-   force them to fill the column at 16:9. */
+   video embeds (YouTube/Vimeo) get forced to 16:9; audio-style embeds
+   (Spotify, etc.) keep their own short player height. */
 .prose video,
-.prose iframe {
+.prose iframe,
+.prose audio {
   display: block;
   max-width: 100%;
   margin: 1.75rem 0;
   border-radius: 4px;
 }
 .prose video { height: auto; }
-.prose iframe {
-  width: 100%;
+.prose audio { width: 100%; }
+/* Fill the column but keep the embed's own height by default (right for
+   Spotify's ~152/352px players). */
+.prose iframe { width: 100%; border: 0; }
+/* Video providers have no natural height — give them a responsive 16:9 box. */
+.prose iframe[src*="youtube"],
+.prose iframe[src*="vimeo"] {
   height: auto;
   aspect-ratio: 16 / 9;
-  border: 0;
 }
 
 .prose blockquote {
