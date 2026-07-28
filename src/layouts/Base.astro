@@ -25,8 +25,12 @@ const ogImage = new URL(`${base}og.png`, Astro.site);
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
 
-    {/* Favicons */}
+    {/* Favicons — .ico first (Chrome favors it), then SVG + PNG fallbacks.
+        PNG/ICO are rasterized so the lettering doesn't depend on font support. */}
+    <link rel="icon" href={`${base}favicon.ico`} sizes="any" />
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="icon" type="image/png" sizes="32x32" href={`${base}favicon-32.png`} />
+    <link rel="icon" type="image/png" sizes="16x16" href={`${base}favicon-16.png`} />
     <link rel="apple-touch-icon" href={`${base}apple-touch-icon.png`} />
 
     {/* Open Graph (Slack, LinkedIn, Discord, iMessage, WhatsApp, Facebook…) */}
