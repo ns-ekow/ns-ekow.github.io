@@ -3,7 +3,7 @@ title: "Hello, World"
 description: "The first project on my new portfolio."
 date: 2026-07-22
 tags: ["Full Stack", "Astro", "WebGL"]
-demo: "https://example.com"
+demo: "https://ns-ekow.github.io/"
 repo: "https://github.com/ns-ekow/ns-ekow.github.io"
 featured: true
 ---
