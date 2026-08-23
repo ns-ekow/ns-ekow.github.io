@@ -1,4 +1,0 @@
-- One of my aims is to create a software project worthy of the GREATEST HITS category in the Github Archive Program.
-- this is a lifetime project
-- but also a grand vision greater than mankind.
-- this is my Ubermensch Manifesto/Portfolio
