@@ -3,6 +3,11 @@
 A minimal Astro portfolio with a WebGL water background, deployed on GitHub Pages.
 Content lives as Markdown in the repo — the repo is the CMS.
 
+- One of my aims is to create a software project worthy of the GREATEST HITS category in the Github Archive Program.
+- this is a lifetime project
+- but also a grand vision greater than mankind.
+- this is my Ubermensch Manifesto/Portfolio
+
 ## Develop
 
 ```bash
