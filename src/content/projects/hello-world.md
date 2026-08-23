@@ -15,5 +15,7 @@ To add another, drop a new `.md` file into `src/content/projects/`, give it
 up on the home page and gets its own URL automatically — **that's your
 GitHub-as-CMS**: the repo _is_ the content store.
 
-You can write anything Markdown supports here — headings, lists, code, images
-(put them in `public/` or alongside the post), and links.
+- One of my aims is to create a software project worthy of the GREATEST HITS category in the Github Archive Program.
+- this is a lifetime project
+- but also a grand vision greater than mankind.
+- this is my Ubermensch Manifesto/Portfolio.
