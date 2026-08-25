@@ -15,7 +15,7 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 const base = import.meta.env.BASE_URL;
 ---
-<Base title={`${post.data.title} — Your Name`} description={post.data.description}>
+<Base title={`${post.data.title} — Saki`} description={post.data.description}>
   <article class="prose paper">
     <header class="post-head">
       <h1>{post.data.title}</h1>
