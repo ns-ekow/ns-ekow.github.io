@@ -354,3 +354,17 @@ body.theme-night .paper::before {
   background: url('/paper-dark.png') center / 256px 256px;
   filter: url(#paper-deckle) drop-shadow(0 14px 34px rgba(0, 0, 0, 0.5));
 }
+
+/* ---- Print --------------------------------------------------------------- */
+/* The CV page is the one page people actually print, so printing should yield
+   the content on plain paper: no ocean canvas, no chrome, no paper texture. */
+@media print {
+  body { background: #fff; color: #000; }
+  #canvas,
+  .skip-layer,
+  .site-header { display: none; }
+  main.site { max-width: none; padding: 0; }
+  .paper { color: #000; padding: 0; }
+  .paper::before { display: none; }
+  a { color: #000; }
+}

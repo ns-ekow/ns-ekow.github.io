@@ -12,8 +12,8 @@ npm-debug.log*
 .env.production
 # macOS
 .DS_Store
-# logseq
-logseq/
-pages/
+# logseq (root-level only; anchored so they don't swallow src/pages and src/scripts)
+/logseq/
+/pages/
 
-scripts/
+/scripts/

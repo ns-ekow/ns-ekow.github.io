@@ -1,0 +1,318 @@
+---
+import Base from '../layouts/Base.astro';
+const base = import.meta.env.BASE_URL;
+
+// The PDF lives at a permanent path (`/cv.pdf`). To publish a new version,
+// overwrite public/cv.pdf in place so links already handed out keep working.
+// `download` only changes the saved filename, not the URL.
+const pdf = `${base}cv.pdf`;
+const updated = 'September 2026';
+---
+<Base
+  title="CV — Saki"
+  description="Ekow Nii Saki Sackey — software engineer. Backend, cloud and quality assurance."
+>
+  <article class="prose paper cv">
+    <header class="post-head">
+      <h1>Ekow Nii Saki Sackey</h1>
+      <p class="cv-tagline">Software Engineer · Backend · Cloud · Quality Assurance</p>
+      <p class="cv-contact">
+        <a href="mailto:ekowsackey22@gmail.com">ekowsackey22@gmail.com</a> ·
+        <a href="tel:+233598838503">+233 598 838 503</a> ·
+        <span>Accra, Ghana</span>
+      </p>
+      <p class="cv-contact">
+        <a href="https://github.com/ns-ekow" target="_blank" rel="noopener noreferrer">github.com/ns-ekow</a> ·
+        <a href="https://linkedin.com/in/ns-sackey" target="_blank" rel="noopener noreferrer">linkedin.com/in/ns-sackey</a>
+      </p>
+      <div class="post-links">
+        <a class="post-link" href={pdf} download="Ekow-Sackey-CV.pdf">Download PDF ↓</a>
+        <a class="post-link" href={pdf} target="_blank" rel="noopener noreferrer">Open PDF ↗</a>
+      </div>
+      <p class="meta cv-updated">Updated {updated}</p>
+    </header>
+
+    <h2>Profile</h2>
+    <p>
+      Software engineer with a background in Computer Engineering. I have professional Software
+      Engineering experience spanning full-stack web development internships and most recently an
+      intensive one-year professional training programme in Java, Spring Boot, AWS Architecture and
+      Software Quality. I am dedicated and self-driven, a quick learner with strong communication
+      skills and an ability to adapt quickly to change. I am technically versatile and willing to
+      deepen my expertise while contributing meaningful work to any Software project.
+    </p>
+
+    <h2>Technical Skills</h2>
+    <dl class="cv-skills">
+      <dt>Languages</dt>
+      <dd>Java, Python, TypeScript, SQL, Go</dd>
+
+      <dt>Backend</dt>
+      <dd>
+        Spring Boot, Spring Data JPA, Spring Security, Spring Cloud (Eureka, Gateway), RabbitMQ,
+        Resilience4j, REST, GraphQL, Flask, FastAPI, Node.js, Express.js
+      </dd>
+
+      <dt>Frontend</dt>
+      <dd>Vue 3, Pinia, Vue Router, Vite, React, Next.js, Tailwind CSS</dd>
+
+      <dt>Databases</dt>
+      <dd>PostgreSQL, MongoDB, DynamoDB, Redis</dd>
+
+      <dt>Cloud and DevOps</dt>
+      <dd>
+        AWS (Cloud Practitioner Certified): ECS/Fargate, Lambda, API Gateway, S3, CloudFront, RDS
+        and RDS Proxy, DynamoDB, EventBridge, SNS/SQS, Cognito, Amplify, VPC, IAM, CloudFormation,
+        SAM; Docker, GitHub Actions, CI/CD, OIDC federation, Infrastructure as Code
+      </dd>
+
+      <dt>Testing and Quality</dt>
+      <dd>JUnit 5, Vitest, JMeter, VisualVM, test planning, traceability, defect management</dd>
+
+      <dt>AI and ML</dt>
+      <dd>RAG pipelines, Hugging Face Transformers, model fine-tuning</dd>
+
+      <dt>Tools</dt>
+      <dd>Git, Figma, Postman</dd>
+    </dl>
+
+    <h2>Experience</h2>
+
+    <h3>Software Engineering Trainee (Backend · Cloud · Quality Assurance)</h3>
+    <p class="cv-meta">AmaliTech, Accra, Ghana · November 2025 - September 2026</p>
+    <ul>
+      <li>
+        Delivered an internal data validation platform as part of a five-engineer Scrum team:
+        volunteered into frontend, then into quality engineering.
+      </li>
+      <li>
+        Served as the project's sole quality gate: raised and drove 58 defects to resolution across
+        five epics, reaching handover with no major defects or blockers outstanding.
+      </li>
+      <li>
+        Rebuilt the backend test infrastructure, taking the suite from 296 tests to 445, exercising
+        every main path against Testcontainers PostgreSQL, a real SMTP server and a real browser.
+      </li>
+      <li>
+        Authored the product specification after an undocumented mid-project pivot and drove it to
+        Product Owner sign-off.
+      </li>
+      <li>
+        Profiled and optimised API performance under load using async patterns, concurrency control
+        and caching, with before-and-after measurements taken in VisualVM and JMeter.
+      </li>
+      <li>
+        Delivered multiple AWS-centred lab projects as working deployments within the Cloud
+        Computing training curriculum: ECS Fargate with blue/green CI/CD, multi-AZ VPCs in
+        CloudFormation, RDS with connection proxying and Redis caching, and event-driven serverless
+        on Lambda, DynamoDB and EventBridge.
+      </li>
+    </ul>
+
+    <h3>Full-Stack Developer Intern</h3>
+    <p class="cv-meta">Mon &amp; Associates, Remote · February 2024 - August 2024</p>
+    <ul>
+      <li>
+        Transformed AllAcademies, a learning and automated assessment platform, from a bare-bones
+        skeleton interface into a polished, intuitive product, owning the full UI/UX redesign end
+        to end.
+      </li>
+      <li>
+        Built responsive frontend interfaces using Tailwind CSS and GSAP animations, prototyped in
+        Figma ahead of implementation, and contributed to backend development in PHP and Laravel.
+      </li>
+    </ul>
+
+    <h3>Python Development Intern</h3>
+    <p class="cv-meta">GlobalCode, Accra, Ghana · September 2023 - October 2023</p>
+    <ul>
+      <li>
+        Went properly into the weeds with Python for the first time across an intensive one-month
+        bootcamp, moving from algorithm scripting and data handling into full-stack web development
+        with Flask and Bootstrap.
+      </li>
+      <li>
+        Learned to integrate and consume third-party REST APIs, and to reason about how data moves
+        between a service, a backend and a rendered page. Gained hands-on experience of the vast
+        capabilities of the Python programming language through Raspberry Pi projects.
+      </li>
+      <li>
+        Capstone project: built MEJ News with two other developers as the programme's final team
+        deliverable, a news aggregator integrating a third-party news API to fetch, sort and
+        categorise articles dynamically, in Flask with a Bootstrap frontend.
+      </li>
+    </ul>
+
+    <h2>Projects</h2>
+
+    <h3>Lab Results Validation App</h3>
+    <p class="cv-meta">Full-Stack · AmaliTech Internal Platform · June 2026 - September 2026</p>
+    <ul>
+      <li>
+        Internal platform that ingests instructors' grading workbooks from SharePoint, validates
+        them against reference data and maintains a full audit trail. Vue 3 and Pinia frontend
+        against a Spring Boot and PostgreSQL backend.
+      </li>
+      <li>
+        Shipped the entire admin and instructor surface as sole frontend engineer: 16 Vue 3 and
+        TypeScript screens with role-based access control, plus a design system of tokens and
+        primitives.
+      </li>
+      <li>
+        Moved into the sole QA role on the same product and diagnosed its only blocker: change
+        detection keyed record identity on a mutable field, so ordinary re-grades were silently
+        discarded and same-day duplicates dropped entirely. Traced both failure paths and proposed
+        the fix that shipped with a database migration.
+      </li>
+      <li>
+        Made the product testable without its external dependency by refactoring the SharePoint
+        integration behind an interface with a fixture-backed implementation, and added a
+        17-journey Playwright regression pack.
+      </li>
+    </ul>
+
+    <h3>Food Delivery Platform</h3>
+    <p class="cv-meta">Microservices · Java, Spring Cloud, RabbitMQ, Docker</p>
+    <ul>
+      <li>
+        Decomposed a monolithic Spring Boot backend into four independently deployable
+        microservices, each with its own database, replacing cross-domain joins with
+        service-to-service REST calls.
+      </li>
+      <li>
+        Connected them with Eureka service discovery, a Spring Cloud Gateway handling routing, JWT
+        authentication and rate limiting, RabbitMQ event messaging and Resilience4j circuit breakers
+        with fallbacks; the full system up and running from a single Docker Compose command.
+      </li>
+    </ul>
+
+    <h3>Serverless Task Manager</h3>
+    <p class="cv-meta">AWS SAM · Lambda, DynamoDB, EventBridge, Cognito</p>
+    <ul>
+      <li>
+        Fully serverless, event-driven application: Cognito authentication, CRUD through API Gateway
+        and Lambda onto DynamoDB, and a frontend hosted on Amplify.
+      </li>
+      <li>
+        Implemented per-task scheduled expiry through EventBridge with SNS email notification, and
+        idempotent cancellation through DynamoDB Streams into an SQS FIFO queue; defined entirely as
+        infrastructure as code with an automated deployment pipeline.
+      </li>
+    </ul>
+
+    <h3>TwiGPT chatbot</h3>
+    <p class="cv-meta">Final Year Project · December 2024 - September 2025</p>
+    <ul>
+      <li>
+        Developed a generative language model based on the GPT architecture, fine-tuned entirely on
+        Twi, a low-resource African language; conducted the NLP research under the supervision of a
+        Senior Lecturer and built the data collection and training pipelines from the JW corpus and
+        transcribed local news sources.
+      </li>
+      <li>
+        Built the serving layer and chat application around it: a single streaming interface hiding
+        three different execution paths, namely a local Ollama server, Hugging Face Transformers
+        loaded in-process, and a remote Gradio Space.
+      </li>
+      <li>
+        Designed a feedback loop that turned ordinary use of the application into labelled training
+        data for the next iteration of the model.
+      </li>
+      <li>Research thesis graded A.</li>
+    </ul>
+
+    <h2>Education</h2>
+    <h3>BSc Computer Engineering</h3>
+    <p class="cv-meta">University of Ghana · 2021 - 2025</p>
+    <p>Second Class Honours (Upper Division)</p>
+
+    <h2>Certifications</h2>
+    <ul>
+      <li>AWS Certified Cloud Practitioner, Amazon Web Services</li>
+      <li>Generative AI Fundamentals, Databricks</li>
+      <li>Responsive Web Design, freeCodeCamp</li>
+      <li>Scientific Computing with Python, freeCodeCamp</li>
+    </ul>
+
+    <h2>Languages</h2>
+    <p>English · Ga · Twi</p>
+
+    <div class="post-links post-links--footer">
+      <a class="post-link" href={pdf} download="Ekow-Sackey-CV.pdf">Download PDF ↓</a>
+    </div>
+    <a class="back" href={base}>&larr; Back home</a>
+  </article>
+</Base>
+
+<style>
+  /* Section headers borrow the mono label treatment used by `section h2`
+     elsewhere on the site, which suits a CV's rubric better than prose h2. */
+  .cv h2 {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.65;
+    margin: 2.75rem 0 0.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  }
+
+  .cv h3 { margin: 1.75rem 0 0; font-size: 1.1rem; }
+
+  .cv-tagline {
+    margin: 0 0 0.35rem;
+    font-size: 1.02rem;
+    opacity: 0.8;
+  }
+
+  /* Contact lines wrap to their own rows on a phone rather than overflowing. */
+  .cv-contact {
+    margin: 0 0 0.25rem;
+    font-size: 0.9rem;
+    opacity: 0.75;
+    overflow-wrap: anywhere;
+  }
+
+  .cv-updated { margin: 1.25rem 0 0; }
+
+  .cv .post-links { margin-top: 1.5rem; }
+
+  /* Org and date line under each role. Not `.meta`, which carries a bottom
+     margin sized for a page header. */
+  .cv-meta {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    opacity: 0.6;
+    margin: 0.25rem 0 0.6rem;
+  }
+
+  /* Label/value grid on wide screens, stacked on narrow. */
+  .cv-skills {
+    display: grid;
+    grid-template-columns: minmax(9rem, max-content) 1fr;
+    gap: 0.45rem 1.25rem;
+    margin: 1.1rem 0;
+  }
+  .cv-skills dt {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.76rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    padding-top: 0.2rem;
+  }
+  .cv-skills dd { margin: 0; }
+
+  @media (max-width: 34rem) {
+    .cv-skills { grid-template-columns: 1fr; gap: 0.15rem; }
+    .cv-skills dd { margin-bottom: 0.75rem; }
+  }
+
+  /* Printing the page should yield the CV itself, not the site chrome. */
+  @media print {
+    .cv .post-links,
+    .cv .back { display: none; }
+  }
+</style>
