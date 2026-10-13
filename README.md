@@ -77,17 +77,4 @@ It renders into `#canvas`, toggles `.theme-night` on `<body>`, and cycles
 AUTO/DARK/LIGHT via `#theme-toggle`. Keep the `LICENSE`/attribution if you
 redistribute it.
 
-### Roadmap: from ocean → lake with skipping rocks
-
-The renderer already has a **ripple system** — this is the hook for the lake idea:
-
-- `MAX_RIPPLES`, the `ripples[]` array, and `addRipple(x, z, time, amplitude)`.
-- Ripples are currently spawned on **click** (`canvas.addEventListener('click', ...)`).
-
-Plan:
-1. **Calm the water into a lake** — fewer FBM octaves + smaller wave amplitude
-   in `QUALITY_SETTINGS` and the wave shader; stronger/cleaner reflection.
-2. **Automate skips** — replace the click handler with a timer that emits a
-   *sequence* of ripples marching in a line (skip 1 now, skip 2 at +150ms, …),
-   each with slightly smaller amplitude. Bump `MAX_RIPPLES` to fit a few throws.
-3. Eventually swap in your own single-pass shader once the pieces are familiar.
+so cool.
