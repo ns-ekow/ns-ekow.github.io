@@ -2,7 +2,7 @@
 title: "Building Mobius"
 description: "experimental AI edtech for autodidacts"
 date: 2026-10-22
-tags: building-mobius ep1
+tags: ["building-mobius", "ep1"]
 ---
 
 - Mobius is a pokemon concept. a roko's-basillisk-hal-9000-esque pokemon that you grow yourself.
